@@ -16,12 +16,17 @@ export class UsersService {
     return await this.usersRepository.save(createUser);
   }
 
-  public async getAll(paginationDto: PaginationDto): Promise<PaginatedUsers> {
+  public async getAll(search: string, paginationDto: PaginationDto): Promise<PaginatedUsers> {
     const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
-
-    const totalCount = await this.usersRepository.count()
-    const users = await this.usersRepository.createQueryBuilder()
-      .offset(!skippedItems ? null : skippedItems)
+    let query = this.usersRepository.createQueryBuilder()
+    if (search){
+      query = query.where("\"userName\" ILike :userName", { userName:'%' + search + '%' })
+        .orWhere("\"firstName\" ILike :firstName", { firstName:'%' + search + '%' })
+        .orWhere("\"lastName\" ILike :lastName", { lastName:'%' + search + '%' })
+        .orWhere("\"email\" ILike :email", { email:'%' + search + '%' })
+    }
+    const totalCount =await query.getCount();
+    const users = await query.offset(!skippedItems ? null : skippedItems)
       .limit(!paginationDto.limit ? null : paginationDto.limit)
       .getMany()
 

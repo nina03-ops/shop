@@ -25,11 +25,14 @@ export class UsersController {
   }
 
     @Get('all')
-  public async getAll(@Query() paginationDto: PaginationDto): Promise<PaginatedUsersDto> {
+  public async getAll(
+    @Query() paginationDto: PaginationDto,
+    @Query('search') search: string,
+    ): Promise<PaginatedUsersDto> {
     paginationDto.page = Number(paginationDto.page)
     paginationDto.limit = Number(paginationDto.limit)
     //convert user.Entity in userDto
-    const paginatedResult = await this.usersService.getAll(paginationDto);
+    const paginatedResult = await this.usersService.getAll(search,paginationDto);
     const entityList = paginatedResult.data;
     const dtoList : UserDto[] =  [];
     entityList.map(user => dtoList.push(Mapper.userEntityToDto(user)));

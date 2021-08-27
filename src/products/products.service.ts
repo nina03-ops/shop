@@ -22,13 +22,17 @@ export class ProductsService {
 
   public async getAll(search: string, paginationDto: PaginationDto): Promise<PaginatedProducts> {
     const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
-    const totalCount = await this.productsRepository.createQueryBuilder().where("name ILike :name", { name:'%' + search + '%' }).getCount()
-    const products = await this.productsRepository.createQueryBuilder()
-      .where("name ILike :name", { name:'%' + search + '%' })
-      .offset(!skippedItems ? null : skippedItems)
+    let query = this.productsRepository.createQueryBuilder()
+    if (search){
+      query = query.where("name ILike :name", { name:'%' + search + '%' })
+      .orWhere("description ILike :description", { description:'%' + search + '%' })
+      .orWhere("price = :price", { price: search })      
+    }
+    const totalCount = await query.getCount();      
+    const products = await query.offset(!skippedItems ? null : skippedItems)
       .limit(!paginationDto.limit ? null : paginationDto.limit)
       .getMany()
-      // products.where('products.name ILIKE :search')
+      
     return {
       totalCount,
       page: paginationDto.page,
