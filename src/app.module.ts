@@ -4,11 +4,13 @@ import { UsersModule } from './users/users.module';
 import { Connection } from 'typeorm';
 import { User } from './users/user.entity';
 import { ProductsModule } from './products/products.module';
+import { CartsModule } from './cart/carts.module';
 
 @Module({
   imports: [
     UsersModule,
     ProductsModule,
+    CartsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
