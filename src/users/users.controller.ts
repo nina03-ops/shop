@@ -37,7 +37,7 @@ export class UsersController {
     const dtoList : UserDto[] =  [];
     entityList.map(user => dtoList.push(Mapper.userEntityToDto(user)));
 
-    //convert product dto in PaginatedProductsResultDto
+    //convert user dto in PaginatedUserResultDto
     const paginatedUsersDto = new PaginatedUsersDto();
     paginatedUsersDto.data = dtoList;
     paginatedUsersDto.limit = paginationDto.limit;
@@ -56,18 +56,18 @@ export class UsersController {
 
   @Put('/edit/:id')
   public async update(@Body() createUserDto: CreateUserDto, @Param('id') id: number): Promise<UserDto> {
-    const {userName, firstName, lastName,password, email} = createUserDto;
-
-    const editedUser =  await this.usersService.getOne(id);
-    if (!editedUser) {
+    const foundUser =  await this.usersService.getOne(id);
+    if (!foundUser) {
       throw new NotFoundException('User not found');
     }
-    editedUser.userName = userName;
-    editedUser.firstName = firstName;
-    editedUser.lastName = lastName;
-    editedUser.password = password;
-    editedUser.email = email;
-    const edited = await this.usersService.edit(editedUser);
+    //after we find the user we put in that entity the data that comes from dto
+    foundUser.userName = createUserDto.userName;
+    foundUser.firstName = createUserDto.firstName;
+    foundUser.lastName = createUserDto.lastName;
+    foundUser.password = createUserDto.password;
+    foundUser.email = createUserDto.email;
+
+    const edited = await this.usersService.edit(foundUser);
     const dto = Mapper.userEntityToDto(edited);
     return dto;
 }
