@@ -30,10 +30,10 @@ export class ProductsController {
     ): Promise<PaginatedProductsDto> {
     paginationDto.page = Number(paginationDto.page)
     paginationDto.limit = Number(paginationDto.limit)
-
-    //convert product entity in product dto
+    
     const paginatedResult = await this.productsService.getAll(search,paginationDto);
     const entityList = paginatedResult.data;
+        //convert product entity in product dto
     const dtoList : ProductDto[] =  [];
     entityList.map(product => dtoList.push(Mapper.productEntityToDto(product)));
     //convert product dto in PaginatedProductsResultDto
