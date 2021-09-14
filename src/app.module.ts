@@ -15,31 +15,6 @@ import * as connectionOptions from './ormconfig';
     ProductsModule,
     CartsModule,
     TypeOrmModule.forRoot({...connectionOptions, autoLoadEntities: true}),
-
-    // TypeOrmModule.forRoot({
-      // Local db
-      // type: 'postgres',
-      // host: 'localhost',
-      // port: 5432,
-      // username: 'postgres',
-      // password: ' ',
-      // database: 'shop',
-      // entities: [User],
-      // synchronize: true,
-      // autoLoadEntities: true,
-      // logging: true
-
-      //Azure db
-      // host: process.env.DB_HOST,
-      // username: process.env.DB_USERNAME,     
-      // password: process.env.DB_PASS,
-      // database: process.env.DB_NAME,
-      // port: 5432,
-      // ssl: true
-    // }),
   ],
 })
 export class AppModule {}
-// export class AppModule {
-//   constructor(private connection: Connection) {}
-// }
