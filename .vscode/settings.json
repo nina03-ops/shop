@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/6ce007f0-4009-4699-bf83-fdabe9611002/resourceGroups/store/providers/Microsoft.Web/sites/backendStore",
+    "appService.deploySubpath": "."
+}
