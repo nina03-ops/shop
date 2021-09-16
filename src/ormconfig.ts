@@ -24,15 +24,5 @@ const connectionOptions: ConnectionOptions = {
   ssl: true
 }
 
-// const connectionOptions: ConnectionOptions = {
-//     type: 'postgres',
-//     host: 'localhost',
-//     port: 5432,
-//     username: 'postgres',
-//     password: ' ',
-//     database: 'shop',
-//     entities: [User, Product, Cart],
-//     synchronize: true,
-//     logging: true
-//   }
+
 export = connectionOptions
