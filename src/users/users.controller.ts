@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateUserDto } from './dto/create_user_dto';
 import { UsersService } from './users.service';
 import {User} from './user.entity';
@@ -6,12 +6,15 @@ import { UserDto } from './dto/user.dto.ts';
 import { Mapper } from './userMapping';
 import { PaginationDto } from 'src/utils/pagination.dto';
 import { PaginatedUsersDto } from './dto/paginatedUsers.dto';
+import { AdminGuard } from 'src/commons/admin.guard';
 
 @Controller('user')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Post('create')
+  // @UseGuards(new AdminGuard())
+  @UsePipes(new ValidationPipe())
   public async create (@Body() createUserDto: CreateUserDto) : Promise <UserDto> {
     const user = new User();
     user.userName = createUserDto.userName;

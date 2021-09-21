@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateProductDto } from './dto/create_product_dto';
 import { PaginationDto } from '../utils/pagination.dto';
 import { ProductDto } from './dto/product.dto';
@@ -6,6 +6,7 @@ import { Product } from './product.entity';
 import { Mapper } from './productMapping';
 import { ProductsService } from './products.service';
 import { PaginatedProductsDto } from './dto/paginatedProductsDto';
+import { AdminGuard } from 'src/commons/admin.guard';
 
 
 @Controller('product')
@@ -13,6 +14,8 @@ export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Post('create')
+  // @UseGuards(new AdminGuard())
+  @UsePipes(new ValidationPipe())
   public async create (@Body() createProductDto: CreateProductDto) : Promise <ProductDto> {
     const product = new Product();
     product.name = createProductDto.name;

@@ -1,5 +1,6 @@
+import { IsInt, IsString } from "class-validator";
 export class CreateProductDto {
-    name: string;
-    description: string;
-    price: number;
+  @IsString() name: string;
+  @IsString() description: string;
+  @IsInt() price: number;
   }
