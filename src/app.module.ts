@@ -1,13 +1,12 @@
 require('dotenv').config()
 
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
-// import { Connection } from 'typeorm';
-import { User } from './users/user.entity';
 import { ProductsModule } from './products/products.module';
 import { CartsModule } from './cart/carts.module';
 import * as connectionOptions from './ormconfig';
+import { AuthenticationMiddleware } from './commons/authentication.middleware';
 
 @Module({
   imports: [
@@ -17,4 +16,14 @@ import * as connectionOptions from './ormconfig';
     TypeOrmModule.forRoot({...connectionOptions, autoLoadEntities: true}),
   ],
 })
-export class AppModule {}
+export class AppModule {
+  public configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthenticationMiddleware)
+      .forRoutes(
+        { path: '/user', method: RequestMethod.POST },
+        { path: '/product', method: RequestMethod.POST },
+        { path: '/cart', method: RequestMethod.POST },
+      );
+    }
+}
