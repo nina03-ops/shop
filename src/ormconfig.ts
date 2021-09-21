@@ -21,7 +21,7 @@ const connectionOptions: ConnectionOptions = {
   entities: [User, Product, Cart],
   synchronize: true,
   logging: true,
-  ssl: true
+  // ssl: true
 }
 
 
