@@ -14,7 +14,7 @@ export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Post('create')
-  // @UseGuards(new AdminGuard())
+  @UseGuards(new AdminGuard())
   @UsePipes(new ValidationPipe())
   public async create (@Body() createProductDto: CreateProductDto) : Promise <ProductDto> {
     const product = new Product();
